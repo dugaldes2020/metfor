@@ -1,0 +1,62 @@
+library(plotly)
+library(xlsx)
+
+ctt <- read.xlsx2("metfor.xlsx", 
+                  
+                  
+                  
+                  sheetIndex = 1, 
+                  
+                  
+                  startRow=3, 
+                  
+                  
+                  endRow = 27)
+
+
+a <- list(
+  autotick = FALSE,
+  ticks = "outside",
+  tick0 = 0,
+  dtick = 1,
+  ticklen = 5,
+  tickwidth = 2,
+  tickcolor = toRGB("blue")
+)
+
+b <- list(
+  autotick = FALSE,
+  ticks = "outside",
+  tick0 = 0,
+  dtick = 10,
+  ticklen = 5,
+  tickwidth = 2,
+  tickcolor = toRGB("blue")
+)
+
+
+
+ctt$Hora<-(0:23)
+Temp<-ctt$Temp
+Hum.Rel<-ctt$HumRel
+Vel.Vto<-ctt$Vel.Vie
+x<-seq(0,23,1)
+p <- plot_ly(ctt, x =~x) %>% 
+ add_trace(y=~Temp, type = "scatter",name = 'Temperatura[°C]', mode = "lines", line = list(shape = 'spline', color = 'rgb(205, 12, 24)', width= 3))%>%
+ add_trace(y=~Hum.Rel, type = "scatter",name = 'H.Rel [%]', mode = "lines", line = list(shape = 'spline', color = 'rgb(51, 187,255)', width= 3))%>%
+add_trace(y=~Vel.Vto, type = "scatter",name = 'Vel.Vto [km/h]', mode = "lines", line = list(shape = 'spline', color = 'rgb(255, 231, 58)', width= 3))%>%
+  layout(
+    title = 'Variables Meteo Constitución',
+    xaxis = list(
+      type = 'integer',
+      title = 'Hora',dtick=1
+    ),
+    yaxis = list(
+       type = 'integer',
+      title = 'Valores',
+      range = c(0,100)
+    ))
+
+p
+
+
